@@ -5,11 +5,11 @@
 # Print list of active hosts, ports, or subnets (/24) from nmap xmp results
 # Output (nmap) command lines for retesting hosts
 #
-# Project URL: https://bitbucket.org/memoryresident/gnxparse
+# Project URL: https://bitbucket.org/memoryresident/gnxtools
 # Author URL: https://www.glenscott.net
 
 # todo:
-# - Reduce repetition of XML parsing - get all hosts/ports into nested (dict) data structure and pass that around rather than doing the work in each function.
+# - Add JSON output support
 # - Add in better support for TCP/UDP filtering. At the moment the script just deals with 'open ports' regardless of protocol.
 
 import sys, argparse
