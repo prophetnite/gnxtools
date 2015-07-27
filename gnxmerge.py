@@ -22,7 +22,7 @@ def handle_opts():
 	parser.add_argument('-s', '-sources', action='store', dest='sources', required=True,
 					help='Comma separated list of paths to files and/or folder contents to merge. An .xml extension is not mandatory; all files and contents of target folder will be (non-recursively) processed, regardless of extension. If files are present which are not valid XML, they will be skipped with warnings.')
 	parser.add_argument('-v', '--version', action='version', 
-					version='%(prog)s 1.0 : Glens Nmap XML Merger (http://bitbucket.org/memoryresident/gnxtools )'
+					version='%(prog)s 1.0.1 : Glens Nmap XML Merger (http://bitbucket.org/memoryresident/gnxtools )'
 	)
 
 	args = parser.parse_args()
@@ -58,13 +58,13 @@ def finalise_xml(nmaprun_merged_results, script_start_time):
 	total_seconds = nmaprun_merged_results[2]
 	total_files = nmaprun_merged_results[3]
 	nmaprun_string = ET.tostring(nmaprun)
-	total_script_time = time.time()-script_start_time;
+	total_script_time = int(time.time())-script_start_time;
 	
 	summary_string = ('Nmap XML merge done at ' + time.strftime("%c") + "; " + str(total_hosts) + ' total hosts found in ' + str(total_files)  +' files; Merge completed in ' + str(total_script_time) + ' seconds')
 	
 	
 	finished_attribs = {}
-	finished_attribs["time"] = str(time.time())
+	finished_attribs["time"] = str(int(time.time()))
 	finished_attribs["timestr"] = time.strftime("%c")
 	finished_attribs["elapsed"] = str(total_seconds)
 	finished_attribs["summary"] = summary_string
@@ -146,9 +146,10 @@ def output_results(nmap_file_preamble, nmaprun, merge_job_output):
 
 def main():
 	
-	script_start_time = time.time()
+	# Running time.time() through int as the former returns epoch in the form of a float which is not the official format. 
+	# discovered this because ndiff was breaking on the merged output. Also applied to time.time call in finalise_xml
+	script_start_time = int(time.time())
 	merge_job_output = []
-	# create epoch script start time here and pass it to finalise for reporting
 	
 	nmap_file_preamble = ('<?xml version="1.0"?> \n'
 							'<!DOCTYPE nmaprun PUBLIC "-//IDN nmap.org//DTD Nmap XML 1.04//EN" "https://svn.nmap.org/nmap/docs/nmap.dtd"> \n'
